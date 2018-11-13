@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+     <!-- 上传文件的弹出窗口动作定义-->
+    <record model="ir.actions.act_window" id="action_trainee_upload_file">
+        <field name="name">Upload File</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">trainee_mgmt.uploadfile</field>
+        <field name="target">new</field>
+        <field name="view_mode">form</field>
+    </record>
+
+    <!--表单视图定义  id只能包含一个 .  最好不要带 .  name 只用作页面上的展示-->
+    <record id="trainee_mgmt_trainee_form" model="ir.ui.view">
+        <field name="name">trainee.form</field>
+        <field name="model">hr.trainee</field>
+        <field name="arch" type="xml">
+             <form string="Listado de Hello">
+                <header>
+                    <button name="action_draft" type="object"
+                            string="Reset to draft"
+                            states="confirmed,done" groups="trainee_mgmt.group_user"/>
+                    <button name="action_confirm" type="object"
+                            string="Confirm" states="draft"
+                            class="oe_highlight" groups="trainee_mgmt.group_manager"/>
+                    <button name="action_done" type="object"
+                            string="Mark as done" states="confirmed" groups="trainee_mgmt.group_manager"
+                            class="oe_highlight"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group>
+                       <group string="Basic Information" >
+                                <field name="trainer" options="{'no_open': True, 'no_create': True}"/>
+                                <field name="trainer_id" />
+                                <field name="hrbp"/>
+                                <field name="training_start_date" widget="date"/>
+                                <field name="training_end_date" widget="date"/>
+                                <field name="department_id" options="{'no_open': True, 'no_create': True}"/>
+                                <field name="country_id" options="{'no_open': True, 'no_create': True}"/>
+                       </group>
+                        <group string="Personal Information">
+                            <field name="name"/>
+                            <field name="graduation_date" widget="date"/>
+                            <field name="idcard_type"/>
+                            <field name="idcard_number"/>
+                            <field name="education"/>
+                            <field name="university"/>
+                            <field name="mobile_phone"/>
+                        </group>
+                        <group string="Bank Information ">
+                            <field name="bank_account_id" options="{'no_open': True, 'no_create': True}"/>
+                            <field name="upload_file" filename="file_name"/>
+                            <field name="file_name" invisible="1"/>
+                            <field name="user_id"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!--管理者能看到的列表视图定义-->
+     <record id="trainee_mgmt_trainee_tree" model="ir.ui.view">
+        <field name="name">trainee.tree</field>
+        <field name="model">hr.trainee</field>
+        <field name="type">tree</field>
+         <field name="arch" type="xml">
+             <tree>
+                 <field name="name"/>
+                 <field name="trainer"/>
+                 <field name="hrbp"/>
+                 <field name="state"/>
+             </tree>
+
+        </field>
+    </record>
+
+    <!--实习生能看到的列表视图定义-->
+     <record id="trainee_mgmt_trainee_t_tree" model="ir.ui.view">
+        <field name="name">trainee.tree</field>
+        <field name="model">hr.trainee</field>
+        <field name="type">tree</field>
+         <field name="arch" type="xml">
+             <tree>
+                 <field name="name"/>
+                 <field name="state"/>
+             </tree>
+
+        </field>
+    </record>
+
+    <!--实习生申请-->
+    <record model="ir.actions.act_window" id="action_trainee_enrollment_menu">
+        <field name="name">Trainee Enrollment</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hr.trainee</field>
+        <field name="view_id" ref="trainee_mgmt_trainee_t_tree"/>
+        <field name="domain">[('user_id','=',uid)]</field>
+        <!--<field name="view_id" ref="trainee_mgmt_trainee_fo  rm"/>-->
+    </record>
+
+
+    <!--带教老师可以看见 实习生基本信息-->
+    <record model="ir.actions.act_window" id="action_trainee_information_manager_menu">
+         <field name="name">Trainee Information</field>
+         <field name="type">ir.actions.act_window</field>
+         <field name="res_model">hr.trainee</field>
+         <field name="view_id" ref="trainee_mgmt_trainee_tree"/>
+         <field name="domain">[('trainer_id','=',uid)]</field>
+         <!--<field name="view_type">form</field>-->
+         <!--<field name="view_mode">tree,form</field>-->
+    </record>
+
+    <!--管理员可以看见 实习生基本信息-->
+    <record model="ir.actions.act_window" id="action_trainee_information_admin_menu">
+         <field name="name">Trainee Information</field>
+         <field name="type">ir.actions.act_window</field>
+         <field name="res_model">hr.trainee</field>
+         <field name="view_id" ref="trainee_mgmt_trainee_tree"/>
+    </record>
+
+    <!--<record model="ir.actions.act_window.view" id="action_trainee_information_menu_tree">-->
+        <!--<field name="sequence" eval="1"/>-->
+        <!--<field name="view_mode">tree</field>-->
+        <!--<field name="view_id" ref="trainee_mgmt_trainee_tree"/>-->
+        <!--<field name="act_window_id" ref="action_trainee_information_menu"/>-->
+        <!--&lt;!&ndash;<field name="domain">[('user_id','=',uid)]</field>&ndash;&gt;-->
+    <!--</record>-->
+
+    <!--<record model="ir.actions.act_window.view" id="action_trainee_information_menu_form">-->
+        <!--<field name="sequence" eval="2"/>-->
+        <!--<field name="view_mode">form</field>-->
+        <!--<field name="view_id" ref="trainee_mgmt_trainee_form"/>-->
+        <!--<field name="act_window_id" ref="action_trainee_information_menu"/>-->
+    <!--</record>-->
+
+    <!--<record  model="ir.actions.server" id="action_trainee_information_menu_server">-->
+        <!--<field name="name">hello</field>-->
+        <!--<field name="model_id" ref="model_hr_trainee" />-->
+        <!--<field name="code">-->
+            <!--action = env['hr.trainee'].hello()-->
+        <!--</field>-->
+    <!--</record>-->
+
+    <!--菜单定义-->
+    <!--实习生管理-->
+    <menuitem id="trainee_mgmt_menu" name="Trainee Management" sequence="10" parent="hr.menu_hr_root"/>
+    <!--Trainee Menus-->
+    <menuitem id="trainee_enrollment_menu" name="Trainee Enrollment" sequence="10" parent="trainee_mgmt_menu" action="action_trainee_enrollment_menu" groups="trainee_mgmt.group_user"/>
+    <menuitem id="trainee_attendance_menu" name="Trainee Attendance" sequence="10" parent="trainee_mgmt_menu" action="action_trainee_enrollment_menu" groups="trainee_mgmt.group_user"/>
+    <menuitem id="trainee_information_manager_menu" name="Trainee Information" sequence="10" parent="trainee_mgmt_menu" action="action_trainee_information_manager_menu" groups="trainee_mgmt.group_manager"/>
+    <menuitem id="trainee_information_admin_menu" name="Trainee Information" sequence="10" parent="trainee_mgmt_menu" action="action_trainee_information_admin_menu" groups="trainee_mgmt.group_admin"/>
+    <menuitem id="trainee_attendance_report_menu" name="Attendance Report" sequence="10" parent="trainee_mgmt_menu" action="action_trainee_information_menu" groups="trainee_mgmt.group_manager"/>
+
+</odoo>

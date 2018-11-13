@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+     <!-- 上传文件的弹出窗口动作定义
+    <record model="ir.actions.act_window" id="action_trainee_upload_file">
+        <field name="name">Upload File</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">trainee_mgmt.uploadfile</field>
+        <field name="target">new</field>
+        <field name="view_mode">form</field>
+    </record>
+    -->
+    <!--表单视图定义  id只能包含一个 .  最好不要带 .  name 只用作页面上的展示
+    <record id="trainee_mgmt_trainee_form" model="ir.ui.view">
+        <field name="name">trainee.form</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form" />
+        <field name="arch" type="xml">
+     -->
+            <!--
+            <field name="work_phone" position="after">
+             <field name="trainer"/>
+            </field>
+            -->
+            <!-- 删除一个父类的group
+            <xpath expr="//field[@name='department_id']/.." position="replace"/>
+            -->
+            <!-- 增加一个group
+            <xpath expr="//page[@name='public']/group" position="after">
+                <group string="hello">
+                    <field name="work_phone"/>
+                </group>
+            </xpath>
+            -->
+            <!-- 删除一个page
+            <xpath expr="//field[@name='department_id']/../../.." position="replace"/>
+            <xpath expr="//field[@name='gender']/../../.." position="replace"/>
+            <xpath expr="//field[@name='company_id']/../../.." position="replace"/>
+            -->
+            <!-- 字段属性修改
+            <field name="category_ids" position="attributes">
+                <attribute name="readonly">True</attribute>
+            </field>
+            -->
+            <!-- 增加一个page
+            <xpath expr="//notebook" position="inside">
+                <page name="basic" string="Basic Information">
+                    <group>
+                        <group string="Basic Information">
+                            <field name="trainer" options="{'no_open': True, 'no_create': True}"/>
+                            <field name="hrbp"/>
+                            <field name="training_start_date" widget="date"/>
+                            <field name="training_end_date" widget="date"/>
+                            <field name="department_id" options="{'no_open': True, 'no_create': True}"/>
+                            <field name="country_id" options="{'no_open': True, 'no_create': True}"/>
+                        </group>
+                        <group string="Personal Information">
+                            <field name="graduation_date" widget="date"/>
+                            <field name="idcard_type"/>
+                            <field name="identification_id" groups="hr.group_hr_user"/>
+                            <field name="education"/>
+                            <field name="university"/>
+                            <field name="mobile_phone"/>
+                        </group>
+                        <group string="Contact Information">
+                            <field name="address_home_id" context="{'show_address': 1}" options="{'always_reload': True, 'highlight_first_line': True}"/>
+                        </group>
+                        <group string="Bank Information ">
+                            <field name="bank_account_id" context="{'default_partner_id': address_home_id}"/>
+                            <field name="upload_file" filename="file_name"/>
+
+                            <field name="file_name" invisible="1"/>
+                            //button绑定action
+                            <button name="%(action_trainee_upload_file)d" string="upload" type="action"/>
+                        </group>
+                    </group>
+                </page>
+                -->
+                <!-- 只能写在内部 可以换成css引用
+                <style>
+                    .openerp .Your_custom_class > img { height: 6000px; width: 10000px; }
+                    .openerp .oe_form .oe_form_field_image img { max-width:656px; max-height: 1056px; }
+                </style>
+                <field name="bankcard_img" widget='image' class="Your_custom_class" string="请上传银行卡照片"/>
+                -->
+    <!--
+        </field>
+    </record>
+    -->
+    <!--列表视图定义
+     <record id="trainee_mgmt_trainee_tree" model="ir.ui.view">
+        <field name="name">trainee.tree</field>
+        <field name="model">hr.employee</field>
+        <field name="type">tree</field>
+         <field name="inherit_id" ref="hr.view_employee_tree" />
+         <field name="arch" type="xml">
+            <field name="name"/>
+             <xpath expr="//tree/field[@name='name']" position="after">
+                    <field name="trainer"/>
+                    <field name="hrbp"/>
+             </xpath>
+            <field name="work_email" position="replace"/>
+            <field name="company_id" groups="base.group_multi_company" position="replace"/>
+            <field name="department_id" position="replace"/>
+            <field name="job_id" position="replace"/>
+            <field name="parent_id" position="replace"/>
+        </field>
+    </record>
+    -->
+
+    <!--菜单动作定义 注意 菜单要引用菜单动作，所以 菜单动作先定义  这个name 是打开窗口的名字
+    <record model="ir.actions.act_window" id="action_trainee_enrollment_menu">
+        <field name="name">Trainee Enrollment</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hr.employee</field>
+        <field name="view_mode">form</field>
+    </record>
+    -->
+    <!--菜单动作定义 注意 菜单要引用菜单动作，所以 菜单动作先定义  这个name 是打开窗口的名字
+    <record model="ir.actions.act_window" id="action_trainee_information_menu">
+        <field name="name">Trainee Information</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hr.employee</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('category_ids','in',[1])]</field>
+    </record>
+    -->
+
+    <!--Trainee Management
+    <menuitem id="trainee_mgmt_menu" name="Trainee Management" sequence="10" parent="hr.menu_hr_root"/>
+    -->
+    <!--Trainee Menus
+    <menuitem id="trainee_enrollment_menu" name="Trainee Enrollment" sequence="10" parent="trainee_mgmt_menu" action="action_trainee_enrollment_menu"/>
+    <menuitem id="trainee_attendance_menu" name="Trainee Attendance" sequence="10" parent="trainee_mgmt_menu" action="action_trainee_enrollment_menu"/>
+    <menuitem id="trainee_information_menu" name="Trainee Information" sequence="10" parent="trainee_mgmt_menu" action="action_trainee_information_menu"/>
+    <menuitem id="trainee_attendance_report_menu" name="Attendance Report" sequence="10" parent="trainee_mgmt_menu" action="action_trainee_information_menu"/>
+    -->
+</odoo>
